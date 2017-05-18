@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>UML Project Team #13</title>
+
+    <script type="text/javascript" src="lib/dataframe.js"></script>
+    <script type="text/javascript" src="lib/Chart.min.js"></script>
+
+    <script type="text/javascript" src="dist/js/CustomCharts.js" ></script>
+    <script type="text/javascript" src="dist/js/ChartStores.js"></script>
+    <script type="text/javascript" src="dist/js/Dashboard.js" ></script>
+    <script type="text/javascript" src="dist/js/Services.js" ></script>
+
+    <script type="text/javascript" src="dist/js/DataBeans.js" ></script>
+    <script type="text/javascript" src="dist/js/Observer.js" ></script>
+
+    <script type="text/javascript" src="dist/js/PlotBarChart.js"></script>
+    <script type="text/javascript" src="dist/js/PlotLineChart.js"></script>
+    <script type="text/javascript" src="dist/js/PlotRadarChart.js"></script>
+    <script type="text/javascript" src="dist/js/PlotPieChart.js"></script>
+    <script type="text/javascript" src="dist/js/PlotDoughnutChart.js"></script>
+    <script type="text/javascript" src="dist/js/PlotStackChart.js"></script>
+
+
+    <script type="text/javascript" src="dist/js/CustomChartsFactory.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="dist/css/styles.css">
+
+</head>
+
+<body bgcolor="#FFFFFF" onLoad="loadDataset()">
+
+<br>
+<div id="divDashboard"><h3>Dashboard &nbsp&nbsp&nbsp&nbsp
+  <select name="datasetList" id="datasetId" form="datasetForm" onClick="loadDatasetTable(this)">
+    <option value="Chicago">Chicago</option>
+    <option value="NewYork">New York</option>
+    <option value="Austin">Austin</option>
+    <option value="Florida">Florida</option>
+    <option value="SanFrancisco">San Francisco</option>
+  </select>
+</h3>
+</div>
+
+<hr>
+
+<div class="tableContainer" id="divTable">
+</div>
+
+<hr>
+<h4>Columns</h4>
+<div class="divColumnSlicing" id="divColumnSlicing">
+</div>
+<button type="filterCall" onClick="update()">Apply</button>
+
+<hr>
+
+<h4>Generate Charts</h4>
+<br>
+
+
+<hr>
+<div class="divCombo" id="divCombo" hidden="true">
+
+    Select: &nbsp&nbsp&nbsp&nbsp
+        <select id="selectClause" multiple>
+        </select>
+
+    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+
+    Where: &nbsp&nbsp&nbsp&nbsp
+        <select id="whereClause" onchange="generateWhereClauseValues()" multiple>
+        </select>
+<br><br><br><br>
+
+<div id="valueClauseDiv" hidden="true">
+
+</div>
+
+    <br><br>
+
+    <button onClick="fetchFilterData()">Select Chart Type</button>
+
+</div>
+
+
+
+<div class="chartTypes">
+<form name="myForm" id="chartId" onClick="generateChart()">
+    <input type="radio" name="chartType" value="bar">Bar Chart</input>
+    <input type="radio" name="chartType" value="line">Line Chart</input>
+    <input type="radio" name="chartType" value="radar">Radar Chart</input>
+    <input type="radio" name="chartType" value="pie">Pie Chart</input>
+    <input type="radio" name="chartType" value="doughnut">Doughnut Chart</input>
+    <input type="radio" name="chartType" value="stack">Stack Chart</input>
+</form>
+</div>
+
+<div id="divChart">
+    <canvas id="myChart" width="800" height="300"></canvas>
+</div>
+
+<hr>
+
+</body>
+
+<script type="text/javascript" charset="utf-8">
+
+var datasetSelected = document.getElementById("datasetId");
+
+/*
+ *  Loads Dataset From CSV File in Dashboard.js
+ *
+ */
+function loadDataset() {
+  console.log(datasetSelected.value);
+  loadDatasetTable(datasetSelected);
+}
+
+/*
+ *  Calls CustomChartFactory class to create chart
+ *
+ */
+function generateChart() {
+  var chartSelected = getRadioVal('chartType');
+  var selectedDataset = new CustomChartFactory();
+  selectedDataset.displayChart(datasetSelected.value, chartSelected);
+}
+
+/*
+ *  Gets The Radio Value of the selected button
+ *
+ */
+function getRadioVal(name) {
+    var val;
+    var radios = document.myForm.elements[name];
+
+    for (var i=0, len=radios.length; i<len; i++) {
+        if ( radios[i].checked ) {
+            val = radios[i].value;
+            break;
+        }
+    }
+    return val;
+}
+
+</script>
+
+</html>
